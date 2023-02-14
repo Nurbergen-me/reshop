@@ -273,13 +273,13 @@ body {
 
 /*End Header Style*/
 
-main {
+/* main { 
   display: flex;
   flex-grow: 1;
   position: relative;
   justify-content: center;
   gap: 10px;
-}
+} */
 
 /*Start Menu Style*/
 
