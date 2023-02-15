@@ -25,7 +25,5 @@ export default {
 </script>
 
 <style>
-.recommend {
-  margin: 100px auto 0;
-}
+
 </style>

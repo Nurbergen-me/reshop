@@ -64,24 +64,23 @@
               <div class="product-page__info-viewers">
                 Этот товар сейчас смотрят: 14 человек
               </div>
-              <h1 class="product-page__info-name">Свитер Forever21</h1>
-              <div class="product-page__info-light">Forever21</div>
-              <div class="product-page__info-light">Артикул: Р7142</div>
+              <h1 class="product-page__info-name"> {{ product.title }} </h1>
+              <div class="product-page__info-light"> {{ product.slug }} </div>
+              <div class="product-page__info-light">Артикул: {{ product.id }} </div>
               <div class="product-page__sizes">
                 <div class="product-page__sizes-text">Размер:</div>
                 <div class="product-page__sizes-items">
-                  <div class="product-page__sizes-item">S</div>
+                  <div class="product-page__sizes-item"> {{ product.size }} </div>
                 </div>
               </div>
-              <p class="product-page__info-text">Материал: 100% акрил.</p>
+              <p class="product-page__info-text">Материал: {{ product.material}}.</p>
               <p class="product-page__info-text">
-                Свитер светло-кофейного цвета, с V-образным вырезом и крупной
-                вязкой. Свободного кроя.
+                {{ product.desc }}
               </p>
               <div class="product-page__actions">
                 <div class="product-page__prices">
-                  <div class="product-page__newprice">1400 р.</div>
-                  <div class="product-page__oldprice">1800 р.</div>
+                  <div class="product-page__newprice">{{ product.newPrice }} р.</div>
+                  <div class="product-page__oldprice">{{ product.oldPrice }} р.</div>
                 </div>
                 <a href="#" class="product-page__actions-like">
                   <img src="@/assets/images/like.svg" alt="" />
@@ -111,8 +110,8 @@
               </div>
               <a href="#" class="product-page__discount">Запросить скидку</a>
               <div class="product-page__info-buttons">
-                <a href="#" class="product-page__info-btn">В корзину</a>
-                <a href="#" class="product-page__info-btn light"
+                <a href="" class="product-page__info-btn" @click.prevent="addToCart(product)">В корзину</a>
+                <a href="" class="product-page__info-btn light" @click.prevent="buyNow(product)"
                   >Купить сейчас</a
                 >
               </div>
@@ -342,7 +341,7 @@
                 <img src="@/assets/images/product.svg" alt="" />
                 <div class="card-sign">Отличное</div>
                 <div class="card-actions">
-                  <a href="" class="card-actions-left">В корзину</a>
+                  <div href="#" class="card-actions-left" @click.prevent="addToCart()">В корзину</div>
                   <div class="card-actions-right">
                     <a href="#" class="card-actions-icon">
                       <img src="@/assets/images/eye.svg" alt="" />
@@ -367,7 +366,35 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
+    name: 'ProductPage',
+    
+    data() {
+      return {
+        product: {
+          id: 12434,
+          title: 'Свитер Forever21',
+          slug: 'Forever21',
+          material: '100% акрил',
+          size: 'S',
+          desc: 'Свитер светло-кофейного цвета, с V-образным вырезом и крупной вязкой. Свободного кроя',
+          newPrice: 1400,
+          oldPrice: 1800
+        }
+      }
+    },
+
+    methods: {
+      ...mapMutations({
+        addToCart: 'cart/addToCart'
+      }),
+      buyNow(product) {
+        this.addToCart(product)
+        this.$router.push('/cart')
+      }
+    }
+
 
 }
 </script>

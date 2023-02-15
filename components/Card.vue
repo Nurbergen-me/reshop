@@ -4,7 +4,7 @@
         <img :src="require(`@/assets/images/${cardData.image}`)" alt="" />
         <div class="recommend__card-sign card-sign"> {{ cardData.sign}} </div>
         <div class="recommend__actions card-actions">
-            <a href="" class="recommend__actions-left">В корзину</a>
+            <a href="" class="recommend__actions-left" @click.prevent="addToCart(cardData)">В корзину</a>
             <div class="recommend__actions-right card-actions-right">
             <a
                 href="#"
@@ -33,14 +33,15 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
     name: 'Card',
     props: ['cardData'],
-    
-    data() {
-        return {
-            publicPath: process.env.BASE_URL
-        }
+
+    methods: {
+      ...mapMutations({
+        addToCart: 'cart/addToCart'
+      })
     }
 }
 </script>

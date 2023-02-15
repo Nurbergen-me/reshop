@@ -1,9 +1,9 @@
 <template>
     <main>
-      <section class="cart">
+      <section class="cart" v-if="totalQuantity > 0">
         <div class="container">
           <div class="cart__title">
-            Корзина <span class="cart__amount">4</span>
+            Корзина <span class="cart__amount"> {{ totalQuantity}} </span>
           </div>
           <div class="cart__wrapper">
             <div class="cart__list">
@@ -20,7 +20,7 @@
                   <label for="select-all">Выбрать всё</label>
                 </div>
               </div>
-              <div class="cart__item">
+              <div class="cart__item" v-for="product in cartProducts" :key="product.id">
                 <div class="cart__item-check">
                   <input type="checkbox" class="cart__item-checkbox" />
                   <label></label>
@@ -30,20 +30,20 @@
                 </div>
                 <div class="cart__item-info">
                   <div class="cart__item-prices--mob">
-                    <div class="cart__item-newprice--mob">1500 р.</div>
-                    <div class="cart__item-oldprice--mob">590 р.</div>
+                    <div class="cart__item-newprice--mob">{{ product.oldPrice }} р.</div>
+                    <div class="cart__item-oldprice--mob">{{ product.newPrice }} р.</div>
                   </div>
                   <a href="#" class="cart__item-name"
-                    >Мужская рубашка Mustang</a
+                    >{{ product.title }}</a
                   >
                   <div class="cart__item-wrapper">
                     <div class="cart__item-desc">
-                      <p>Размер: S</p>
+                      <p>Размер: {{ product.size }}</p>
                       <p>Состояние: отличное</p>
-                      <p>Материал: хлопок</p>
+                      <p>Материал: {{ product.material }}</p>
                     </div>
                     <div class="cart__item-actions">
-                      <a class="cart__item-icon">
+                      <a class="cart__item-icon" @click.prevent="deleteFromCart(product)">
                         <img src="@/assets/images/trash.svg" alt="" />
                       </a>
                       <a class="cart__item-icon">
@@ -51,8 +51,8 @@
                       </a>
                     </div>
                     <div class="cart__item-prices">
-                      <div class="cart__item-oldprice">590 р.</div>
-                      <div class="cart__item-newprice">1500 р.</div>
+                      <div class="cart__item-oldprice">{{ product.oldPrice }} р.</div>
+                      <div class="cart__item-newprice">{{ product.newPrice }} р.</div>
                     </div>
                   </div>
                   <div class="cart__item-viewers">
@@ -61,121 +61,6 @@
                 </div>
               </div>
 
-              <div class="cart__item">
-                <div class="cart__item-check">
-                  <input type="checkbox" class="cart__item-checkbox" />
-                  <label></label>
-                </div>
-                <div class="cart__item-img">
-                  <img src="@/assets/images/cart-img.svg" alt="" />
-                </div>
-                <div class="cart__item-info">
-                  <div class="cart__item-prices--mob">
-                    <div class="cart__item-newprice--mob">1500 р.</div>
-                    <div class="cart__item-oldprice--mob">590 р.</div>
-                  </div>
-                  <a href="#" class="cart__item-name">Пижама Oysho</a>
-                  <div class="cart__item-wrapper">
-                    <div class="cart__item-desc">
-                      <p>Размер: S</p>
-                      <p>Состояние: отличное</p>
-                      <p>Материал: хлопок</p>
-                    </div>
-                    <div class="cart__item-actions">
-                      <a class="cart__item-icon">
-                        <img src="@/assets/images/trash.svg" alt="" />
-                      </a>
-                      <a class="cart__item-icon">
-                        <img src="@/assets/images/like.svg" alt="" />
-                      </a>
-                    </div>
-                    <div class="cart__item-prices">
-                      <div class="cart__item-oldprice">590 р.</div>
-                      <div class="cart__item-newprice">1500 р.</div>
-                    </div>
-                  </div>
-                  <div class="cart__item-viewers">
-                    Этот товар сейчас смотрят: 14 человек
-                  </div>
-                </div>
-              </div>
-
-              <div class="cart__item">
-                <div class="cart__item-check">
-                  <input type="checkbox" class="cart__item-checkbox" />
-                  <label></label>
-                </div>
-                <div class="cart__item-img">
-                  <img src="@/assets/images/cart-img.svg" alt="" />
-                </div>
-                <div class="cart__item-info">
-                  <div class="cart__item-prices--mob">
-                    <div class="cart__item-newprice--mob">1500 р.</div>
-                    <div class="cart__item-oldprice--mob">590 р.</div>
-                  </div>
-                  <a href="#" class="cart__item-name">Свитер Forever21</a>
-                  <div class="cart__item-wrapper">
-                    <div class="cart__item-desc">
-                      <p>Размер: S</p>
-                      <p>Состояние: отличное</p>
-                      <p>Материал: хлопок</p>
-                    </div>
-                    <div class="cart__item-actions">
-                      <a class="cart__item-icon">
-                        <img src="@/assets/images/trash.svg" alt="" />
-                      </a>
-                      <a class="cart__item-icon">
-                        <img src="@/assets/images/like.svg" alt="" />
-                      </a>
-                    </div>
-                    <div class="cart__item-prices">
-                      <div class="cart__item-oldprice">590 р.</div>
-                      <div class="cart__item-newprice">1500 р.</div>
-                    </div>
-                  </div>
-                  <div class="cart__item-viewers">
-                    Этот товар сейчас смотрят: 14 человек
-                  </div>
-                </div>
-              </div>
-              <div class="cart__item">
-                <div class="cart__item-check">
-                  <input type="checkbox" class="cart__item-checkbox" />
-                  <label></label>
-                </div>
-                <div class="cart__item-img">
-                  <img src="@/assets/images/cart-img.svg" alt="" />
-                </div>
-                <div class="cart__item-info">
-                  <div class="cart__item-prices--mob">
-                    <div class="cart__item-newprice--mob">1500 р.</div>
-                    <div class="cart__item-oldprice--mob">590 р.</div>
-                  </div>
-                  <a href="#" class="cart__item-name">Сарафан H&M</a>
-                  <div class="cart__item-wrapper">
-                    <div class="cart__item-desc">
-                      <p>Размер: S</p>
-                      <p>Состояние: отличное</p>
-                      <p>Материал: хлопок</p>
-                    </div>
-                    <div class="cart__item-actions">
-                      <a class="cart__item-icon">
-                        <img src="@/assets/images/trash.svg" alt="" />
-                      </a>
-                      <a class="cart__item-icon">
-                        <img src="@/assets/images/like.svg" alt="" />
-                      </a>
-                    </div>
-                    <div class="cart__item-prices">
-                      <div class="cart__item-oldprice">590 р.</div>
-                      <div class="cart__item-newprice">1500 р.</div>
-                    </div>
-                  </div>
-                  <div class="cart__item-viewers">
-                    Этот товар сейчас смотрят: 14 человек
-                  </div>
-                </div>
-              </div>
               <div class="cart__promo">
                 <label class="cart__promo-label"
                   ><span>Введите промокод, если есть</span>
@@ -284,11 +169,11 @@
               <ul class="check__list">
                 <li class="check__item">
                   <div class="check__item-left">Товары, 4 шт.</div>
-                  <div class="check__item-right">6000 р.</div>
+                  <div class="check__item-right">{{ totalPrice }} р.</div>
                 </li>
                 <li class="check__item">
                   <div class="check__item-left">Скидка</div>
-                  <div class="check__item-right">1500 р.</div>
+                  <div class="check__item-right">{{ totalDiscount }} р.</div>
                 </li>
                 <li class="check__item">
                   <div class="check__item-left">Доставка</div>
@@ -312,6 +197,22 @@
                 Оплатите товары за <span>4:49</span>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+      <section class="cart" v-else>
+        <div class="container">
+          <div class="breadcrumb">
+            <nuxt-link to="/">Главная</nuxt-link>
+            <nuxt-link to="/cart">Корзина</nuxt-link>
+          </div>
+          <div class="cart__title">Корзина</div>
+          <div class="cart__empty">
+            <img src="@/assets/images/cart.svg" alt="" />
+            <div class="cart__empty-title">Ваша корзина пуста</div>
+            <p class="cart__empty-text">
+              <nuxt-link to="/">Нажмите здесь</nuxt-link>, чтобы начать покупки
+            </p>
           </div>
         </div>
       </section>
@@ -390,8 +291,26 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
 export default {
     name: 'Cart',
+
+    computed: {
+        ...mapGetters({
+          cartProducts: 'cart/cartItems',
+          totalPrice: 'cart/totalPrice',
+          totalDiscount: 'cart/totalDiscount',
+          totalQuantity: 'cart/totalQuantity',
+        })
+    },
+
+    methods: {
+      ...mapMutations({
+          deleteFromCart: 'cart/deleteFromCart',
+      })
+    }
+
 }
 </script>
 <style src="@/assets/css/cart.css"></style>
+<style src="@/assets/css/empty-cart.css"></style>

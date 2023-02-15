@@ -2713,14 +2713,14 @@ body {
   margin-top: 0 !important;
 }
 
-.recommend {
+.recommends {
   display: flex;
   flex-direction: column;
   width: 931px;
   margin-top: 25px;
 }
 
-.recommend__item {
+.recommends__item {
   display: flex;
   align-items: center;
   width: 100%;
@@ -2729,31 +2729,31 @@ body {
   border-bottom: 1px solid #b7b7b7;
 }
 
-.recommend__left,
-.recommend__right {
+.recommends__left,
+.recommends__right {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: calc(50% - 35px);
 }
 
-.recommend__left {
+.recommends__left {
   gap: 34px;
 }
 
-.recommend__slider {
+.recommends__slider {
   position: relative;
   width: 147px;
   height: 127px;
   flex-shrink: 0;
 }
 
-.recommend__slider-wrapper {
+.recommends__slider-wrapper {
   width: 100%;
   height: 100%;
 }
 
-.recommend__slide {
+.recommends__slide {
   width: 100%;
   height: 100%;
   background: #d9d9d9;
@@ -2762,18 +2762,18 @@ body {
   align-items: center;
 }
 
-.recommend__slider-prev,
-.recommend__slider-next {
+.recommends__slider-prev,
+.recommends__slider-next {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
 }
 
-.recommend__slider-prev {
+.recommends__slider-prev {
   left: 0;
 }
 
-.recommend__slider-next {
+.recommends__slider-next {
   right: 0;
 }
 
@@ -2781,7 +2781,7 @@ body {
   width: 217px;
 }
 
-.recommend__info-text {
+.recommends__info-text {
   font-family: "Museo Sans Cyrl";
   font-style: normal;
   font-weight: 400;
@@ -2789,7 +2789,7 @@ body {
   line-height: 19px;
 }
 
-.recommend__desc {
+.recommends__desc {
   width: 260px;
   font-family: "Museo Sans Cyrl";
   font-style: normal;
