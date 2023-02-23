@@ -21,12 +21,8 @@
             <nuxt-link to="/about" class="header__top-link">О компании</nuxt-link>
             <nuxt-link to="/rent" class="header__top-link">Аренда одежды</nuxt-link>
             <nuxt-link to="/howItWorks" class="header__top-link">Как это работает</nuxt-link>
-            <nuxt-link to="/howToDonate" class="header__top-link"
-              >Как сдать одежду</nuxt-link
-            >
-            <nuxt-link to="/delivery" class="header__top-link"
-              >Доставка и оплата</nuxt-link
-            >
+            <nuxt-link to="/howToDonate" class="header__top-link">Как сдать одежду</nuxt-link>
+            <nuxt-link to="/delivery" class="header__top-link">Доставка и оплата</nuxt-link>
           </nav>
           <a href="tel:89876542310" class="header__top-phone">
             8 (987) 654-23-10
@@ -35,7 +31,7 @@
       </div>
       <div class="header__inner">
         <div class="container header__inner-container">
-          <div class="burger">
+          <div class="burger" @click="mobileMenu = !mobileMenu">
             <img src="@/assets/images/burger.svg" alt="" />
           </div>
           <div class="header__inner-left">
@@ -94,11 +90,17 @@
                 </div>
                 <p class="header__actions-text">Корзина</p>
               </nuxt-link>
-              <a class="header__actions-item" @click="showAuth = true">
+              <a v-if="!userToken" class="header__actions-item" @click.prevent="showAuth = true">
                 <div class="header__actions-icon">
                   <img src="" alt="" />
                 </div>
                 <p class="header__actions-text">Войти</p>
+              </a>
+              <a v-else class="header__actions-item" @click.prevent="logout()">
+                <div class="header__actions-icon">
+                  <img src="" alt="" />
+                </div>
+                <p class="header__actions-text">Выйти</p>
               </a>
             </div>
           </div>
@@ -116,434 +118,53 @@
               >
               <img src="@/assets/images/burger-sm.svg" alt="" /> Весь каталог</a
             >
-            <nuxt-link :to="`/category/${category.slug}`" class="header__catalog-link" :class="{'header__catalog-link-st': category.bold}" v-for="category in categories" :key="category.id">
-              {{ category.title }}
-            </nuxt-link>
+            <template v-for="(category, index) in catalog.her.categories[1].subCategories" >
+                <nuxt-link 
+                  :to="`/category/${category.id}`" 
+                  class="header__catalog-link" 
+                  :class="{'header__catalog-link-st': category.bold}" 
+                  :key="`main-${category.id}`"
+                  v-if="index < 7"
+                >
+                  {{ category.name }}
+                </nuxt-link>
+            </template>
           </div>
         </div>
         <!-- Полный каталог(Скрытый) Desktop -->
         <div class="window__catalog" :class="{'active': showCatalog}">
           <div class="window__catalog-tabs">
-            <a href="#" class="window__catalog-tab active">ДЛЯ НЕЕ</a>
-            <a href="#" class="window__catalog-tab">ДЛЯ НЕГО</a>
+            <a href="#" class="window__catalog-tab" :class="{'active': currentTab === 'her'}" @click.prevent="currentTab = 'her'">ДЛЯ НЕЕ</a>
+            <a href="#" class="window__catalog-tab" :class="{'active': currentTab === 'his'}" @click.prevent="currentTab = 'his'">ДЛЯ НЕГО</a>
           </div>
-          <div class="window__catalog-body">
-            <ul class="window__catalog-list">
+          <div class="window__catalog-body" v-if="currentTab === 'her'">
+            <ul class="window__catalog-list" v-for="category in catalog.her.categories" :key="`her-category-${category.id}`">
               <li>
-                <a class="window__catalog-link window__catalog-title"
-                  >Популярные бренды</a
-                >
+                <nuxt-link :to="`/category/${category.id}`" class="window__catalog-link window__catalog-title">
+                  {{ category.name }}
+                </nuxt-link>
               </li>
-              <li>
-                <a class="window__catalog-link">Loius Vuitton</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Chanel</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Dior</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Furia</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Dolce & Gabanna</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Gucci</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Michael Kors</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Fendi</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Marc Jacobs</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Valentino</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Guess</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Hermes</a>
-              </li>
-            </ul>
-            <ul class="window__catalog-list">
-              <li>
-                <a class="window__catalog-link window__catalog-title">Одежда</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Брюки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Джинсы</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Кардиганы и кофты</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Костюмы</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Нижнее белье</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Пиджаки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Плавки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Рубашки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Футболки и поло</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Шорты, бермуды</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Спортивная одежда</a>
-              </li>
-            </ul>
-            <ul class="window__catalog-list">
-              <li>
-                <a class="window__catalog-link window__catalog-title">Обувь</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Ботинки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Мокасины</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Пантолеты</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Сандали</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Сапоги</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Слипоны</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Спортивная обувь</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Туфли</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Угги</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Шлепанцы</a>
-              </li>
-            </ul>
-            <ul class="window__catalog-list">
-              <li>
-                <a class="window__catalog-link window__catalog-title"
-                  >Верхняя одежда</a
-                >
-              </li>
-              <li>
-                <a class="window__catalog-link">Дубленки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Куртки, пуховики</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Парки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Плащи, пальто</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Жилеты</a>
-              </li>
-            </ul>
-            <ul class="window__catalog-list">
-              <li>
-                <a class="window__catalog-link window__catalog-title"
-                  >Аксессуары</a
-                >
-              </li>
-              <li>
-                <a class="window__catalog-link">Галстуки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Головные уборы</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Запонки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Зонты</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Кошельки. портмоне</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Оправы</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Перчатки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Платки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Прочее</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Ремни</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Солнцезащитные очки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Часы</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Чехлы</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Шарфы</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Экзотическая кожа</a>
+              <li v-for="subcategory in category.subCategories" :key="`her-subcategories-${subcategory.id}`">
+                <nuxt-link :to="`/category/${subcategory.id}`" class="window__catalog-link">
+                  {{ subcategory.name }}
+                </nuxt-link>
               </li>
             </ul>
             <div class="window__catalog-img">
               <img src="@/assets/images/clear.svg" alt="" />
             </div>
           </div>
-          <div class="window__catalog-body active">
-            <ul class="window__catalog-list">
-              <li>
-                <a class="window__catalog-link window__catalog-title"
-                  >Популярные бренды</a
-                >
-              </li>
-              <li>
-                <a class="window__catalog-link">Loius Vuitton</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Chanel</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Dior</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Furia</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Dolce & Gabanna</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Gucci</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Michael Kors</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Fendi</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Marc Jacobs</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Valentino</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Guess</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Hermes</a>
-              </li>
-            </ul>
-            <ul class="window__catalog-list">
-              <li>
-                <a class="window__catalog-link window__catalog-title">Одежда</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Блузки и рубашки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Брюки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Вечерние платья</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Джемперы и свитшоты</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Джинсы</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Кардиганы и кофты</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Комбинезоны</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Костюмы</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Купальники</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Леггинсы</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Нижнее белье</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Пиджаки и жакеты</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Платья</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Топы</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Туники</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Футболки и поло</a>
-              </li>
-            </ul>
-            <ul class="window__catalog-list">
-              <li>
-                <a class="window__catalog-link window__catalog-title">Обувь</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Балетки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Босоножки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Ботильоны</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Ботинки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Домашняя обувь</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Лоферы</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Мокасины</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Пантолеты</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Сабо</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Сандали</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Сапоги</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Слипоны</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Со шнуровкой</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Спортивная обувь</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Туфли</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Угги</a>
-              </li>
-            </ul>
-            <ul class="window__catalog-list">
-              <li>
-                <a class="window__catalog-link window__catalog-title"
-                  >Верхняя одежда</a
-                >
-              </li>
-              <li>
-                <a class="window__catalog-link">Бомбер</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Ветровки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Жилеты</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Куртки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Пальто</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Парки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Плащи, тренчкоты</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Пончо, накидки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Пуховики</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Шубы, дубленки</a>
-              </li>
-            </ul>
-            <ul class="window__catalog-list">
-              <li>
-                <a class="window__catalog-link window__catalog-title"
-                  >Аксессуары</a
-                >
-              </li>
-              <li>
-                <a class="window__catalog-link">Аксессуары для волос</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Аксессуары для сумок</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Браслеты</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Броши</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Головные уборы</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Зонты</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Кошельки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Носки</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Оправы</a>
-              </li>
-              <li>
-                <a class="window__catalog-link">Палантины</a>
+          <div class="window__catalog-body" v-else-if="currentTab === 'his'">
+            <ul class="window__catalog-list" v-for="category in catalog.his.categories" :key="`his-category-${category.id}`">
+              <li>
+                <nuxt-link :to="`/category/${category.id}`" class="window__catalog-link window__catalog-title">
+                  {{ category.name }}
+                </nuxt-link>
+              </li>
+              <li v-for="subcategory in category.subCategories" :key="`his-subcategories-${subcategory.id}`">
+                <nuxt-link :to="`/category/${subcategory.id}`" class="window__catalog-link">
+                  {{ subcategory.name }}
+                </nuxt-link>
               </li>
             </ul>
             <div class="window__catalog-img">
@@ -552,425 +173,62 @@
           </div>
         </div>
       </div>
-      <div class="mobile">
+      <div class="mobile" :class="{'active': mobileMenu}">
         <div class="mobile__top">
           <div class="mobile__catalog-tabs">
-            <a href="#" class="mobile__catalog-tab active">ДЛЯ НЕЕ</a>
-            <a href="#" class="mobile__catalog-tab">ДЛЯ НЕГО</a>
+            <a href="#" class="mobile__catalog-tab" :class="{'active': currentTab === 'his'}" @click.prevent="currentTab = 'his'">ДЛЯ НЕЕ</a>
+            <a href="#" class="mobile__catalog-tab" :class="{'active': currentTab === 'her'}" @click.prevent="currentTab = 'her'">ДЛЯ НЕГО</a>
           </div>
-          <div class="mobile__catalog-body active">
-            <ul class="mobile__catalog-list active">
-              <li>
-                <a class="mobile__catalog-title">Популярные бренды</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Loius Vuitton</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Chanel</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Dior</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Furia</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Dolce & Gabanna</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Gucci</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Michael Kors</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Fendi</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Marc Jacobs</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Valentino</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Guess</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Hermes</a>
-              </li>
-            </ul>
-            <ul class="mobile__catalog-list">
-              <li>
-                <a class="mobile__catalog-title">Одежда</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Брюки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Джинсы</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Кардиганы и кофты</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Костюмы</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Нижнее белье</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Пиджаки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Плавки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Рубашки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Футболки и поло</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Шорты, бермуды</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Спортивная одежда</a>
-              </li>
-            </ul>
-            <ul class="mobile__catalog-list">
-              <li>
-                <a class="mobile__catalog-title">Обувь</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Ботинки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Мокасины</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Пантолеты</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Сандали</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Сапоги</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Слипоны</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Спортивная обувь</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Туфли</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Угги</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Шлепанцы</a>
-              </li>
-            </ul>
-            <ul class="mobile__catalog-list">
-              <li>
-                <a class="mobile__catalog-title">Верхняя одежда</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Дубленки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Куртки, пуховики</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Парки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Плащи, пальто</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Жилеты</a>
-              </li>
-            </ul>
-            <ul class="mobile__catalog-list">
-              <li>
-                <a class="mobile__catalog-title">Аксессуары</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Галстуки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Головные уборы</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Запонки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Зонты</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Кошельки. портмоне</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Оправы</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Перчатки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Платки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Прочее</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Ремни</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Солнцезащитные очки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Часы</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Чехлы</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Шарфы</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Экзотическая кожа</a>
-              </li>
-            </ul>
+          <div class="mobile__catalog-body" v-if="currentTab === 'her'">
+            <template v-for="category in catalog.her.categories">
+              <ul
+                class="mobile__catalog-list"
+                :class="{'active': currentCategoryId === category.id}"
+                :key="`her-category-m-${category.id}`"
+                v-if="!currentCategoryId || currentCategoryId === category.id"
+               >
+                  <li>
+                    <a class="mobile__catalog-title" @click.prevent="toggleMoblieCategory(category.id)">
+                      {{ category.name }}
+                    </a>
+                  </li>
+                  <li v-for="subcategory in category.subCategories" :key="`her-subcategories-m-${subcategory.id}`">
+                    <nuxt-link :to="`/category/${subcategory.id}`" class="mobile__catalog-link">
+                      {{ subcategory.name }}
+                    </nuxt-link>
+                  </li>
+              </ul>
+            </template>
           </div>
-          <div class="mobile__catalog-body">
-            <ul class="mobile__catalog-list">
-              <li>
-                <a class="mobile__catalog-title">Популярные бренды</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Loius Vuitton</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Chanel</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Dior</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Furia</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Dolce & Gabanna</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Gucci</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Michael Kors</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Fendi</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Marc Jacobs</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Valentino</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Guess</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Hermes</a>
-              </li>
-            </ul>
-            <ul class="mobile__catalog-list">
-              <li>
-                <a class="mobile__catalog-title">Одежда</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Блузки и рубашки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Брюки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Вечерние платья</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Джемперы и свитшоты</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Джинсы</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Кардиганы и кофты</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Комбинезоны</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Костюмы</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Купальники</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Леггинсы</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Нижнее белье</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Пиджаки и жакеты</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Платья</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Топы</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Туники</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Футболки и поло</a>
-              </li>
-            </ul>
-            <ul class="mobile__catalog-list">
-              <li>
-                <a class="mobile__catalog-title">Обувь</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Балетки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Босоножки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Ботильоны</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Ботинки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Домашняя обувь</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Лоферы</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Мокасины</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Пантолеты</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Сабо</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Сандали</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Сапоги</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Слипоны</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Со шнуровкой</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Спортивная обувь</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Туфли</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Угги</a>
-              </li>
-            </ul>
-            <ul class="mobile__catalog-list">
-              <li>
-                <a class="mobile__catalog-title">Верхняя одежда</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Бомбер</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Ветровки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Жилеты</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Куртки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Пальто</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Парки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Плащи, тренчкоты</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Пончо, накидки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Пуховики</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Шубы, дубленки</a>
-              </li>
-            </ul>
-            <ul class="mobile__catalog-list">
-              <li>
-                <a class="mobile__catalog-title">Аксессуары</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Аксессуары для волос</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Аксессуары для сумок</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Браслеты</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Броши</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Головные уборы</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Зонты</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Кошельки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Носки</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Оправы</a>
-              </li>
-              <li>
-                <a class="mobile__catalog-link">Палантины</a>
-              </li>
-            </ul>
+          <div class="mobile__catalog-body" v-if="currentTab === 'his'">
+            <template v-for="category in catalog.his.categories">
+              <ul
+                class="mobile__catalog-list"
+                :class="{'active': currentCategoryId === category.id}"
+                :key="`his-category-m-${category.id}`"
+                v-if="!currentCategoryId || currentCategoryId === category.id"
+               >
+                  <li>
+                    <a class="mobile__catalog-title" @click.prevent="toggleMoblieCategory(category.id)">
+                      {{ category.name }}
+                    </a>
+                  </li>
+                  <li v-for="subcategory in category.subCategories" :key="`his-subcategories-m-${subcategory.id}`">
+                    <nuxt-link :to="`/category/${subcategory.id}`" class="mobile__catalog-link">
+                      {{ subcategory.name }}
+                    </nuxt-link>
+                  </li>
+              </ul>
+            </template>
           </div>
         </div>
-        <div class="mobile__bottom">
+        <div class="mobile__bottom" v-if="!currentCategoryId">
           <nav class="mobile-links">
-            <a href="#" class="mobile-link">О компании</a>
-            <a href="#" class="mobile-link">Аренда одежды</a>
-            <a href="#" class="mobile-link">Как это работает</a>
-            <a href="#" class="mobile-link">Как сдать одежду</a>
-            <a href="#" class="mobile-link">Доставка и оплата</a>
+            <nuxt-link to="/about" class="mobile-link">О компании</nuxt-link>
+            <nuxt-link to="/rent" class="mobile-link">Аренда одежды</nuxt-link>
+            <nuxt-link to="/howItWorks" class="mobile-link">Как это работает</nuxt-link>
+            <nuxt-link to="/howToDonate" class="mobile-link">Как сдать одежду</nuxt-link>
+            <nuxt-link to="/delivery" class="mobile-link">Доставка и оплата</nuxt-link>
           </nav>
           <div class="mobile__footer">
             <a href="#" class="mobile-city"
@@ -1036,6 +294,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Auth from './Auth.vue'
 export default {
   components: { Auth },
@@ -1046,11 +305,14 @@ export default {
             search: false,
             searchInput: '',
             showCatalog: false,
-            categories: [
+            mobileMenu: false,
+            currentTab: 'her',
+            currentCategoryId: null,
+            categoriesSample: [
               {
                 id: 1,
                 title: 'Обувь',
-                slug: 'shoees',
+                slug: 'shoes',
               },
               {
                 id: 2,
@@ -1088,12 +350,392 @@ export default {
                 slug: 'sale',
                 bold: true,
               },
-            ]
+            ],
+            catalogSample: {
+              his: {
+                id: 1,
+                categories: [
+                  {
+                    id: 11,
+                    name: 'Популярные бренды',
+                    subCategories: [
+                      {
+                        id: 101,
+                        name: 'Loius Vuitton'
+                      },
+                      {
+                        id: 104,
+                        name: 'Dolce & Gabanna'
+                      },
+                      {
+                        id: 105,
+                        name: 'Gucci'
+                      },
+                      {
+                        id: 106,
+                        name: 'Michael Kors'
+                      },
+                      {
+                        id: 107,
+                        name: 'Fendi'
+                      },
+                      {
+                        id: 108,
+                        name: 'Marc Jacobs'
+                      },
+                    ]
+                  },
+                  {
+                    id: 21,
+                    name: 'Одежда',
+                    subCategories: [
+                      {
+                        id: 202,
+                        name: 'Брюки'
+                      },
+                      {
+                        id: 204,
+                        name: 'Джемперы и свитшоты'
+                      },
+                      {
+                        id: 205,
+                        name: 'Джинсы'
+                      },
+                      {
+                        id: 206,
+                        name: 'Кардиганы и кофты'
+                      },
+                      {
+                        id: 207,
+                        name: 'Комбинезоны'
+                      },
+                      {
+                        id: 208,
+                        name: 'Костюмы'
+                      },
+                    ]
+                  },
+                  {
+                    id: 31,
+                    name: 'Обувь',
+                    subCategories: [
+                      {
+                        id: 301,
+                        name: 'Босоножки'
+                      },
+                      {
+                        id: 302,
+                        name: 'Ботильоны'
+                      },
+                      {
+                        id: 303,
+                        name: 'Ботинки'
+                      },
+                      {
+                        id: 304,
+                        name: 'Домашняя обувь'
+                      },
+                      {
+                        id: 305,
+                        name: 'Лоферы'
+                      },
+                    ]
+                  },
+                  {
+                    id: 41,
+                    name: 'Верхняя одежда',
+                    subCategories: [
+                      {
+                        id: 401,
+                        name: 'Бомбер'
+                      },
+                      {
+                        id: 402,
+                        name: 'Ветровки'
+                      },
+                      {
+                        id: 403,
+                        name: 'Жилеты'
+                      },
+                      {
+                        id: 404,
+                        name: 'Куртки'
+                      },
+                      {
+                        id: 405,
+                        name: 'Пальто'
+                      },
+                      {
+                        id: 406,
+                        name: 'Парки'
+                      },
+                      {
+                        id: 407,
+                        name: 'Плащи, тренчкоты'
+                      },
+                    ]
+                  },
+                  {
+                    id: 51,
+                    name: 'Аксессуары',
+                    subCategories: [
+                      {
+                        id: 503,
+                        name: 'Браслеты'
+                      },
+                      {
+                        id: 504,
+                        name: 'Броши'
+                      },
+                      {
+                        id: 505,
+                        name: 'Головные уборы'
+                      },
+                      {
+                        id: 506,
+                        name: 'Зонты'
+                      },
+                      {
+                        id: 507,
+                        name: 'Кошельки'
+                      },
+                      {
+                        id: 508,
+                        name: 'Носки'
+                      },
+                    ]
+                  },
+                ]
+              },
+              her: {
+                id: 1,
+                categories: [
+                  {
+                    id: 11,
+                    name: 'Популярные бренды',
+                    subCategories: [
+                      {
+                        id: 101,
+                        name: 'Loius Vuitton'
+                      },
+                      {
+                        id: 102,
+                        name: 'Chanel'
+                      },
+                      {
+                        id: 103,
+                        name: 'Furia'
+                      },
+                      {
+                        id: 104,
+                        name: 'Dolce & Gabanna'
+                      },
+                      {
+                        id: 105,
+                        name: 'Gucci'
+                      },
+                      {
+                        id: 106,
+                        name: 'Michael Kors'
+                      },
+                      {
+                        id: 107,
+                        name: 'Fendi'
+                      },
+                      {
+                        id: 108,
+                        name: 'Marc Jacobs'
+                      },
+                    ]
+                  },
+                  {
+                    id: 21,
+                    name: 'Одежда',
+                    subCategories: [
+                      {
+                        id: 201,
+                        name: 'Блузки и рубашки'
+                      },
+                      {
+                        id: 202,
+                        name: 'Брюки'
+                      },
+                      {
+                        id: 203,
+                        name: 'Вечерние платья'
+                      },
+                      {
+                        id: 204,
+                        name: 'Джемперы и свитшоты'
+                      },
+                      {
+                        id: 205,
+                        name: 'Джинсы'
+                      },
+                      {
+                        id: 206,
+                        name: 'Кардиганы и кофты'
+                      },
+                      {
+                        id: 207,
+                        name: 'Комбинезоны'
+                      },
+                      {
+                        id: 208,
+                        name: 'Костюмы'
+                      },
+                    ]
+                  },
+                  {
+                    id: 31,
+                    name: 'Обувь',
+                    subCategories: [
+                      {
+                        id: 301,
+                        name: 'Босоножки'
+                      },
+                      {
+                        id: 302,
+                        name: 'Ботильоны'
+                      },
+                      {
+                        id: 303,
+                        name: 'Ботинки'
+                      },
+                      {
+                        id: 304,
+                        name: 'Домашняя обувь'
+                      },
+                      {
+                        id: 305,
+                        name: 'Лоферы'
+                      },
+                      {
+                        id: 306,
+                        name: 'Мокасины'
+                      },
+                      {
+                        id: 307,
+                        name: 'Пантолеты'
+                      },
+                      {
+                        id: 308,
+                        name: 'Сабо'
+                      },
+                    ]
+                  },
+                  {
+                    id: 41,
+                    name: 'Верхняя одежда',
+                    subCategories: [
+                      {
+                        id: 401,
+                        name: 'Бомбер'
+                      },
+                      {
+                        id: 402,
+                        name: 'Ветровки'
+                      },
+                      {
+                        id: 403,
+                        name: 'Жилеты'
+                      },
+                      {
+                        id: 404,
+                        name: 'Куртки'
+                      },
+                      {
+                        id: 405,
+                        name: 'Пальто'
+                      },
+                      {
+                        id: 406,
+                        name: 'Парки'
+                      },
+                      {
+                        id: 407,
+                        name: 'Плащи, тренчкоты'
+                      },
+                      {
+                        id: 408,
+                        name: 'Пончо, накидки'
+                      },
+                    ]
+                  },
+                  {
+                    id: 51,
+                    name: 'Аксессуары',
+                    subCategories: [
+                      {
+                        id: 501,
+                        name: 'Аксессуары для волос'
+                      },
+                      {
+                        id: 502,
+                        name: 'Аксессуары для сумок'
+                      },
+                      {
+                        id: 503,
+                        name: 'Браслеты'
+                      },
+                      {
+                        id: 504,
+                        name: 'Броши'
+                      },
+                      {
+                        id: 505,
+                        name: 'Головные уборы'
+                      },
+                      {
+                        id: 506,
+                        name: 'Зонты'
+                      },
+                      {
+                        id: 507,
+                        name: 'Кошельки'
+                      },
+                      {
+                        id: 508,
+                        name: 'Носки'
+                      },
+                    ]
+                  },
+                ]
+              },
+
+            },
         }
+    },
+    mounted() {
+        this.$store.dispatch('auth/init')
+        this.$store.dispatch('products/getCategories')
+    },
+    computed: {
+      ...mapGetters({
+        userToken: 'auth/userToken',
+        catalog: 'products/catalog'
+      })
+    },
+    watch: {
+      '$route.path'(newVal) {
+        this.mobileMenu = false
+        this.showAuth = false
+        this.showCatalog = false
+      }
     },
     methods: {
       toggleModal(value) {
         this.showAuth = value
+      },
+      toggleMoblieCategory(categoryId) {
+        if (this.currentCategoryId) {
+          this.currentCategoryId = null
+        } else {
+          this.currentCategoryId = categoryId
+        }
+      },
+      logout() {
+        this.$store.commit('auth/logout')
       }
     }
 }

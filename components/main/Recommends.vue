@@ -7,7 +7,7 @@
         <div class="recommend__tab" :class="{'active': recommends.currentTab === 'premium'}" @click="changeRecommends('premium')">Премиум</div>
         </div>
         <div class="recommend__body cards">
-            <Card v-for="product in getReccomendCategoryProducts()" :cardData="product" :key="product.id" />
+            <!-- <Card v-for="product in getReccomendCategoryProducts()" :cardData="product" :key="product.id" /> -->
         </div>
     </div>
     </section>

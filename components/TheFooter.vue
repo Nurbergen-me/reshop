@@ -4,47 +4,48 @@
         <div class="footer__inner">
           <div class="footer__left">
             <div class="footer__links">
-              <nuxt-link :to="`/category/shoes`" class="footer__link">Обувь</nuxt-link>
-              <a href="#" class="footer__link">Сумки</a>
-              <a href="#" class="footer__link">Верхняя одежда</a>
-              <a href="#" class="footer__link">Аксессуары</a>
-              <a href="#" class="footer__link">Ювелирные изделия</a>
-              <a href="#" class="footer__link">Премиум</a>
-              <a href="#" class="footer__link">Спорт</a>
+              <template v-for="category in categories">
+                <nuxt-link 
+                class="footer__link"
+                v-if="!category.bold"
+                :key="`category-${category.id}`"
+                :to="`/category/${category.slug}`" 
+                >
+                  {{ category.title }}
+                </nuxt-link>
+              </template>
             </div>
             <div class="footer__links">
               <div class="footer__links-title">Покупателям</div>
               <a href="#" class="footer__link">SALE</a>
-              <a href="#" class="footer__link">Сумки</a>
-              <a href="#" class="footer__link">Как это работает</a>
-              <a href="#" class="footer__link">Аренда одежды</a>
-              <a href="#" class="footer__link">Доставка и оплата</a>
+              <nuxt-link to="/howItWorks" class="footer__link">Как это работает</nuxt-link>
+              <nuxt-link to="/rent" class="footer__link">Аренда одежды</nuxt-link>
+              <nuxt-link to="/delivery" class="footer__link">Доставка и оплата</nuxt-link>
             </div>
             <div class="footer__links">
               <div class="footer__links-title">Продавцам</div>
-              <a href="#" class="footer__link">Как это работает</a>
-              <a href="#" class="footer__link">Как сдать одежду</a>
+              <nuxt-link to="/howItWorks" class="footer__link">Как это работает</nuxt-link>
+              <nuxt-link to="/howToDonate" class="footer__link">Как сдать одежду</nuxt-link>
 
               <div class="footer__links-title footer__links-title--second">
-                О компании
+                <nuxt-link to="/about" class="footer__link">О компании</nuxt-link>
               </div>
               <a href="#" class="footer__link">Вакансии</a>
             </div>
           </div>
-          <div class="footer-mob__links active">
+          <div class="footer-mob__links" :class="{'active': activeTab === 'forBuyer'}" @click="activeTab = 'forBuyer'">
             <div class="footer-mob__title">Покупателям</div>
-            <a href="#" class="footer-mob__link">SALE</a>
-            <a href="#" class="footer-mob__link">Сумки</a>
-            <a href="#" class="footer-mob__link">Как это работает</a>
-            <a href="#" class="footer-mob__link">Аренда одежды</a>
-            <a href="#" class="footer-mob__link">Доставка и оплата</a>
+              <a href="#" class="footer-mob__link">SALE</a>
+              <nuxt-link to="/howItWorks" class="footer-mob__link">Как это работает</nuxt-link>
+              <nuxt-link to="/rent" class="footer-mob__link">Аренда одежды</nuxt-link>
+              <nuxt-link to="/delivery" class="footer-mob__link">Доставка и оплата</nuxt-link>
           </div>
-          <div class="footer-mob__links">
+          <div class="footer-mob__links" :class="{'active': activeTab === 'forSeller'}" @click="activeTab = 'forSeller'">
             <div class="footer-mob__title">Продавцам</div>
-            <a href="#" class="footer-mob__link">Как это работает</a>
-            <a href="#" class="footer-mob__link">Как сдать одежду</a>
+              <nuxt-link to="/howItWorks" class="footer-mob__link">Как это работает</nuxt-link>
+              <nuxt-link to="/howToDonate" class="footer-mob__link">Как сдать одежду</nuxt-link>
           </div>
-          <div class="footer-mob__links">
+          <div class="footer-mob__links" :class="{'active': activeTab === 'about'}" @click="activeTab = 'about'">
             <div class="footer-mob__title">О компании</div>
             <a href="#" class="footer-mob__link">Вакансии</a>
           </div>
@@ -134,15 +135,15 @@
         <a class="footer__actions-icon">
           <img src="@/assets/images/search.svg" alt="" />
         </a>
-        <a class="footer__actions-icon">
+        <nuxt-link to="/cart" class="footer__actions-icon">
           <img src="@/assets/images/like-footer.svg" alt="" />
-        </a>
-        <a class="footer__actions-icon">
+        </nuxt-link>
+        <nuxt-link to="/cart" class="footer__actions-icon">
           <img src="@/assets/images/cart-footer.svg" alt="" />
-        </a>
-        <a class="footer__actions-icon">
+        </nuxt-link>
+        <nuxt-link to="/cabinet" class="footer__actions-icon">
           <img src="@/assets/images/user.svg" alt="" />
-        </a>
+        </nuxt-link>
       </div>
     </footer>
 </template>
@@ -150,6 +151,55 @@
 <script>
 export default {
     name: 'TheFooter',
+
+    data() {
+      return {
+        activeTab: 'forBuyer',
+        categories: [
+              {
+                id: 1,
+                title: 'Обувь',
+                slug: 'shoes',
+              },
+              {
+                id: 2,
+                title: 'Сумки',
+                slug: 'bags',
+              },
+              {
+                id: 3,
+                title: 'Верхняя одежда',
+                slug: 'jackets',
+              },
+              {
+                id: 4,
+                title: 'Аксессуары',
+                slug: 'accessories',
+              },
+              {
+                id: 5,
+                title: 'Ювелирные изделия',
+                slug: 'jewelerly',
+              },
+              {
+                id: 6,
+                title: 'Премиум',
+                slug: 'premium',
+              },
+              {
+                id: 7,
+                title: 'Спорт',
+                slug: 'sport',
+              },
+              {
+                id: 8,
+                title: 'SALE',
+                slug: 'sale',
+                bold: true,
+              },
+            ],
+      }
+    }
 }
 </script>
 

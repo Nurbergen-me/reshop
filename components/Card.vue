@@ -1,8 +1,8 @@
 <template>
   <div class="recommend__card card">
-    <nuxt-link to="/product/forever21" class="recommend__card-img card-img">
-        <img :src="require(`@/assets/images/${cardData.image}`)" alt="" />
-        <div class="recommend__card-sign card-sign"> {{ cardData.sign}} </div>
+    <nuxt-link :to="`/product/${cardData.id}`" class="recommend__card-img card-img">
+        <img :src="`${cardData.photo}`" alt="" />
+        <div class="recommend__card-sign card-sign"> {{ cardData.barcode}} </div>
         <div class="recommend__actions card-actions">
             <a href="" class="recommend__actions-left" @click.prevent="addToCart(cardData)">В корзину</a>
             <div class="recommend__actions-right card-actions-right">
@@ -23,10 +23,10 @@
         </nuxt-link>
 
         <p class="recommend__card-name">
-            {{ cardData.title }}
+            {{ cardData.name }}
         </p>
         <div class="recommend__card-prices">
-        <div class="recommend__card-newprice">{{ cardData.newPrice}} руб</div>
+        <div class="recommend__card-newprice">{{ cardData.lowerPrice.value}} руб</div>
         <div class="recommend__card-oldprice">{{ cardData.oldPrice }} руб</div>
         </div>
     </div>

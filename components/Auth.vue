@@ -2,18 +2,20 @@
   <div class="registration" @click="closeModal">
       <div class="registration__window" @click.stop="">
         <div class="registration__tabs">
-          <div class="registration__tab">Вход</div>
-          <div class="registration__tab active">Регистрация</div>
+          <div class="registration__tab" :class="{'active': authStep === 'login'}" @click="authStep = 'login'">Вход</div>
+          <div class="registration__tab" :class="{'active': authStep === 'registration'}" @click="authStep = 'registration'">Регистрация</div>
         </div>
-        <div class="registration__body">
+        <div class="registration__body" v-if="authStep === 'login'">
           <form class="registration__form">
             <input
               type="email"
+              v-model="auth.email"
               class="registration__input input"
               placeholder="E-mail или номер телефона"
             />
             <input
               type="password"
+              v-model="auth.password"
               class="registration__input input"
               placeholder="Пароль"
             />
@@ -21,11 +23,12 @@
               <input
                 class="registration__checkbox"
                 type="checkbox"
+                v-model="auth.remember"
                 id="remember"
               />
               <label for="remember">Запомнить меня</label>
             </div>
-            <button type="submit" class="btn registration__submit">
+            <button type="submit" class="btn registration__submit" @click.prevent="login()">
               Войти
             </button>
             <p class="registration__text">
@@ -48,15 +51,17 @@
             </p>
           </form>
         </div>
-        <div class="registration__body active">
+        <div class="registration__body" v-if="authStep === 'registration'">
           <form class="registration__form">
             <input
               type="email"
+              v-model="auth.email"
               class="registration__input input"
               placeholder="E-mail или номер телефона"
             />
             <input
               type="password"
+              v-model="auth.password"
               class="registration__input input"
               placeholder="Придумайте пароль"
             />
@@ -64,11 +69,12 @@
               <input
                 class="registration__checkbox"
                 type="checkbox"
+                v-model="auth.remember"
                 id="remember"
               />
               <label for="remember">Запомнить меня</label>
             </div>
-            <button type="submit" class="btn registration__submit">
+            <button type="submit" class="btn registration__submit" @click.prevent="signup()">
               Зарегистрироваться
             </button>
             <p class="registration__text">
@@ -96,12 +102,44 @@
 </template>
 
 <script>
+import auth from '../api'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
     name: 'Auth',
+    data() {
+      return {
+        authStep: 'login',
+        auth: {
+          remember: false,
+          name: '',
+          email: '',
+          phone: '',
+          password: ''
+        }
+      }
+    },
+
+    mounted() {
+        const userData = this.$store.getters['auth/user']
+        this.auth.name = userData.name
+        this.auth.email = userData.email
+        this.auth.password = userData.password
+        if (userData.email) {
+          this.auth.remember = true
+        }
+    },
 
     methods: {
         closeModal() {
             this.$emit('toggleModal', false)
+        },
+
+        login() {
+          this.$store.dispatch('auth/login', this.auth)
+        },
+
+        signup() {
+          this.$store.dispatch('auth/signup', this.auth)
         }
     }
 }

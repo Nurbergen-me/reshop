@@ -782,6 +782,7 @@ p {
   position: relative;
 }
 
+
 .header__catalog {
   display: flex;
   justify-content: space-between;
@@ -896,7 +897,7 @@ p {
   z-index: 100;
 }
 
-.window__catalog.active {
+.window__catalog.active, .header__bottom .container:hover .window__catalog {
   display: block;
 }
 
@@ -920,7 +921,7 @@ p {
 }
 
 .window__catalog-body {
-  display: none;
+  display: flex;
   margin-top: 45px;
   justify-content: space-between;
   gap: 10px;
@@ -977,6 +978,7 @@ p {
   justify-content: space-between;
   padding-bottom: 30px;
   transform: translateX(-200%);
+  transition: 0.5s ease;
   gap: 20px;
   overflow-y: auto;
 }
@@ -1010,7 +1012,7 @@ p {
 }
 
 .mobile__catalog-body {
-  display: none;
+  display: flex;
   flex-direction: column;
 }
 
@@ -1023,6 +1025,10 @@ p {
   position: relative;
   display: flex;
   flex-direction: column;
+}
+
+.mobile__catalog-list.active .mobile__catalog-link {
+  display: block;
 }
 
 .mobile__catalog-link {
@@ -1040,6 +1046,7 @@ p {
   line-height: 19px;
   color: #000000;
   position: relative;
+  transition: 0.5s ease;
 }
 
 .mobile__catalog-title::after {
@@ -1051,6 +1058,16 @@ p {
   top: 50%;
   right: 0;
   transform: translateY(-50%);
+  transition: 0.5s ease;
+}
+
+.mobile__catalog-list.active .mobile__catalog-title {
+  padding-left: 34px;
+}
+
+.mobile__catalog-list.active .mobile__catalog-title::after {
+  right: calc(100% - 15px);
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .mobile__bottom {
@@ -1230,7 +1247,7 @@ p {
 }
 
 .banner__slider-pag {
-  display: none;
+  display: flex;
   margin-top: 12px;
   align-items: center;
   justify-content: center;
@@ -1283,6 +1300,9 @@ p {
   }
   .banner__slide-right {
     width: 103px;
+  }
+  .mobile {
+    width: 100%;
   }
 }
 /*End Banner Style*/
@@ -2303,6 +2323,7 @@ footer {
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
+  cursor: pointer;
 
   color: #c8c8c8;
 }
@@ -2344,7 +2365,7 @@ footer {
 }
 
 .registration__body {
-  display: none;
+  /* display: none; */
 }
 
 .registration__body.active {

@@ -3,7 +3,7 @@
       <section class="cart" v-if="totalQuantity > 0">
         <div class="container">
           <div class="cart__title">
-            Корзина <span class="cart__amount"> {{ totalQuantity}} </span>
+            Корзина <span class="cart__amount"> {{ totalQuantity }} </span>
           </div>
           <div class="cart__wrapper">
             <div class="cart__list">
@@ -26,15 +26,15 @@
                   <label></label>
                 </div>
                 <div class="cart__item-img">
-                  <img src="@/assets/images/cart-img.svg" alt="" />
+                  <img :src="product.photo" alt="" />
                 </div>
                 <div class="cart__item-info">
                   <div class="cart__item-prices--mob">
-                    <div class="cart__item-newprice--mob">{{ product.oldPrice }} р.</div>
-                    <div class="cart__item-oldprice--mob">{{ product.newPrice }} р.</div>
+                    <div v-if="product.price" class="cart__item-newprice--mob">{{ product.price }} р.</div>
+                    <div class="cart__item-oldprice--mob">{{ product.oldPrice }} р.</div>
                   </div>
                   <a href="#" class="cart__item-name"
-                    >{{ product.title }}</a
+                    >{{ product.name }}</a
                   >
                   <div class="cart__item-wrapper">
                     <div class="cart__item-desc">
@@ -51,8 +51,8 @@
                       </a>
                     </div>
                     <div class="cart__item-prices">
-                      <div class="cart__item-oldprice">{{ product.oldPrice }} р.</div>
-                      <div class="cart__item-newprice">{{ product.newPrice }} р.</div>
+                      <div v-if="oldPrice" class="cart__item-oldprice">{{ product.oldPrice }} р.</div>
+                      <div class="cart__item-newprice">{{ product.quantity }} &times; {{ product.price }} р.</div>
                     </div>
                   </div>
                   <div class="cart__item-viewers">
@@ -168,7 +168,7 @@
               <h2 class="check__title">Итого</h2>
               <ul class="check__list">
                 <li class="check__item">
-                  <div class="check__item-left">Товары, 4 шт.</div>
+                  <div class="check__item-left">Товары, {{ totalQuantity }} шт.</div>
                   <div class="check__item-right">{{ totalPrice }} р.</div>
                 </li>
                 <li class="check__item">

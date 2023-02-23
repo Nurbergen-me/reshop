@@ -1,6 +1,6 @@
 <template>
   <main>
-      <section class="product-page">
+      <section class="product-page" v-if="product">
         <div class="container">
           <div class="product-page__breadcrumb breadcrumb">
             <a href="#">Главная</a>
@@ -11,51 +11,20 @@
             <div class="product-page__images">
               <div class="product-page__top-slider">
                 <div class="product-page__top-wrapper">
-                  <div class="product-page__top-img active">
-                    <img src="@/assets/images/slide-img.svg" alt="" />
-                  </div>
-                  <div class="product-page__top-img">
-                    <img src="@/assets/images/slide-img.svg" alt="" />
-                  </div>
-                  <div class="product-page__top-img">
-                    <img src="@/assets/images/slide-img.svg" alt="" />
-                  </div>
-                  <div class="product-page__top-img">
-                    <img src="@/assets/images/slide-img.svg" alt="" />
-                  </div>
-                  <div class="product-page__top-img">
-                    <img src="@/assets/images/slide-img.svg" alt="" />
-                  </div>
-                  <div class="product-page__top-img">
-                    <img src="@/assets/images/slide-img.svg" alt="" />
-                  </div>
-                  <div class="product-page__top-img">
-                    <img src="@/assets/images/slide-img.svg" alt="" />
-                  </div>
+                  <client-only placeholder="Loading...">
+                    <agile ref="carousel" @after-change="e => currentSlide = e.currentSlide">
+                        
+                        <div class="product-page__top-img active" v-for="productImage in fullPhotos" :key="`slide-${productImage}`">
+                          <img :src="productImage" alt="" />
+                        </div>
+                    </agile>
+                </client-only>
                 </div>
               </div>
               <div class="product-page__bottom-slider">
                 <div class="product-page__bottom-wrapper">
-                  <div class="product-page__bottom-img">
-                    <img src="" alt="" />
-                  </div>
-                  <div class="product-page__bottom-img">
-                    <img src="" alt="" />
-                  </div>
-                  <div class="product-page__bottom-img">
-                    <img src="" alt="" />
-                  </div>
-                  <div class="product-page__bottom-img">
-                    <img src="" alt="" />
-                  </div>
-                  <div class="product-page__bottom-img">
-                    <img src="@/assets/images/play.svg" alt="" />
-                  </div>
-                  <div class="product-page__bottom-img">
-                    <img src="" alt="" />
-                  </div>
-                  <div class="product-page__bottom-img">
-                    <img src="" alt="" />
+                  <div class="product-page__bottom-img" v-for="(productImage, index) in fullPhotos" :key="productImage" @click="$refs.carousel.goTo(index)">
+                    <img :src="productImage" alt="" />
                   </div>
                 </div>
               </div>
@@ -64,23 +33,23 @@
               <div class="product-page__info-viewers">
                 Этот товар сейчас смотрят: 14 человек
               </div>
-              <h1 class="product-page__info-name"> {{ product.title }} </h1>
-              <div class="product-page__info-light"> {{ product.slug }} </div>
-              <div class="product-page__info-light">Артикул: {{ product.id }} </div>
+              <h1 class="product-page__info-name"> {{ product.name }} </h1>
+              <div class="product-page__info-light"> {{ product.id }} </div>
+              <div class="product-page__info-light">Артикул: {{ product.barcode }} </div>
               <div class="product-page__sizes">
                 <div class="product-page__sizes-text">Размер:</div>
                 <div class="product-page__sizes-items">
-                  <div class="product-page__sizes-item"> {{ product.size }} </div>
+                  <div class="product-page__sizes-item"> {{ product.sizes[0] }} </div>
                 </div>
               </div>
               <p class="product-page__info-text">Материал: {{ product.material}}.</p>
               <p class="product-page__info-text">
-                {{ product.desc }}
+                {{ product.description }}
               </p>
               <div class="product-page__actions">
                 <div class="product-page__prices">
-                  <div class="product-page__newprice">{{ product.newPrice }} р.</div>
-                  <div class="product-page__oldprice">{{ product.oldPrice }} р.</div>
+                  <div class="product-page__newprice">{{ product.lowerPrice.value }} р.</div>
+                  <div v-if="product.oldPrice" class="product-page__oldprice">{{ product.oldPrice }} р.</div>
                 </div>
                 <a href="#" class="product-page__actions-like">
                   <img src="@/assets/images/like.svg" alt="" />
@@ -369,26 +338,39 @@
 import { mapMutations } from 'vuex'
 export default {
     name: 'ProductPage',
+
+    // async fetch({ params, $api}) {
+    //     const productData = await $api.get(`products/${params.id}`)
+    //     const fullPhotos = await $api.get(`products/${params.id}/full-photos`)
+    //     this.productData = productData.data.response
+    //     this.fullPhotos = fullPhotos.data
+    // },
     
     data() {
       return {
-        product: {
-          id: 12434,
-          title: 'Свитер Forever21',
-          slug: 'Forever21',
-          material: '100% акрил',
-          size: 'S',
-          desc: 'Свитер светло-кофейного цвета, с V-образным вырезом и крупной вязкой. Свободного кроя',
-          newPrice: 1400,
-          oldPrice: 1800
-        }
+        currentSlide: 0,
+        product: null,
+        productData: null,
+        fullPhotos: []
       }
+    },
+
+    mounted() {
+      this.getProduct()
     },
 
     methods: {
       ...mapMutations({
         addToCart: 'cart/addToCart'
       }),
+      async getProduct() {
+        const productData = await this.$api.get(`products/${this.$route.params.id}`)
+        const fullPhotos = await this.$api.get(`products/${this.$route.params.id}/full-photos`)
+        this.productData = productData.data.response
+        this.product = productData.data.response.product
+        this.fullPhotos = fullPhotos.data
+        console.log(productData.data.response)
+      },
       buyNow(product) {
         this.addToCart(product)
         this.$router.push('/cart')
@@ -400,3 +382,15 @@ export default {
 </script>
 
 <style src="@/assets/css/product-content.css"></style>
+<style scoped>
+/* .product-page__top-img {
+  width: 570px;
+} */
+.agile--ssr .agile__slides > * {
+  overflow: hidden;
+  width: 0
+}
+.agile--ssr .agile__slides > *:first-child {
+  width: 570px
+}
+</style>

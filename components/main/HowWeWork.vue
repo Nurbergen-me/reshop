@@ -4,10 +4,10 @@
         <h1 class="main-title howwework__titile">Как это работает?</h1>
         <div class="steps">
         <div class="steps__tabs">
-            <a class="steps__tab active">Для продавцов</a>
-            <a class="steps__tab">Для покупателей</a>
+            <a class="steps__tab" :class="{'active': currentTab === 'seller'}" @click="currentTab = 'seller'">Для продавцов</a>
+            <a class="steps__tab" :class="{'active': currentTab === 'buyer'}" @click="currentTab = 'buyer'">Для покупателей</a>
         </div>
-        <div class="steps__body active">
+        <div class="steps__body" :class="{'active': currentTab === 'seller'}">
             <div class="steps__card">
             <div class="steps__card-number">1</div>
             <div class="steps__card-text">
@@ -55,7 +55,7 @@
             />
             </div>
         </div>
-        <div class="steps__body">
+        <div class="steps__body" :class="{'active': currentTab === 'buyer'}">
             <div class="steps__card">
             <div class="steps__card-number">1</div>
             <div class="steps__card-text">
@@ -90,7 +90,7 @@
             </div>
             </div>
         </div>
-        <div class="steps__nav">
+        <div class="steps__nav" style="display: none">
             <div class="steps__prev">
             <img src="@/assets/images/prev-step.svg" alt="" />
             </div>
@@ -106,7 +106,12 @@
 
 <script>
 export default {
-
+    name: 'HowWeWork',
+    data() {
+        return {
+            currentTab: 'seller',
+        }
+    }
 }
 </script>
 

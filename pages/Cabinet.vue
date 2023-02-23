@@ -6,13 +6,13 @@
                 <div class="cabinet">
                     <aside class="cabinet__menu">
                         <div class="cabinet__tabs">
-                        <a href="#userData" class="cabinet__tab" :class="{'active': currentTab === 'userData'}" @click="currentTab = 'userData'">Данные пользователя</a>
-                        <a href="#payment" class="cabinet__tab" :class="{'active': currentTab === 'payment'}" @click="currentTab = 'payment'">Платежные данные</a>
-                        <a href="#subscriptions" class="cabinet__tab" :class="{'active': currentTab === 'subscriptions'}" @click="currentTab = 'subscriptions'">Подписка на товары</a>
-                        <a href="#sales" class="cabinet__tab" :class="{'active': currentTab === 'sales'}" @click="currentTab = 'sales'">Продажи</a>
-                        <a href="#purchases" class="cabinet__tab" :class="{'active': currentTab === 'purchases'}" @click="currentTab = 'purchases'">Покупки</a>
-                        <a href="#favorites" class="cabinet__tab" :class="{'active': currentTab === 'favorites'}" @click="currentTab = 'favorites'">Избранное</a>
-                        <a href="#messages" class="cabinet__tab" :class="{'active': currentTab === 'messages'}" @click="currentTab = 'messages'">Сообщения</a>
+                        <a href="cabinet#userData" class="cabinet__tab" :class="{'active': currentTab === 'userData'}" @click="currentTab = 'userData'">Данные пользователя</a>
+                        <a href="cabinet#payment" class="cabinet__tab" :class="{'active': currentTab === 'payment'}" @click="currentTab = 'payment'">Платежные данные</a>
+                        <a href="cabinet#subscriptions" class="cabinet__tab" :class="{'active': currentTab === 'subscriptions'}" @click="currentTab = 'subscriptions'">Подписка на товары</a>
+                        <a href="cabinet#sales" class="cabinet__tab" :class="{'active': currentTab === 'sales'}" @click="currentTab = 'sales'">Продажи</a>
+                        <a href="cabinet#purchases" class="cabinet__tab" :class="{'active': currentTab === 'purchases'}" @click="currentTab = 'purchases'">Покупки</a>
+                        <a href="cabinet#favorites" class="cabinet__tab" :class="{'active': currentTab === 'favorites'}" @click="currentTab = 'favorites'">Избранное</a>
+                        <a href="cabinet#messages" class="cabinet__tab" :class="{'active': currentTab === 'messages'}" @click="currentTab = 'messages'">Сообщения</a>
                         </div>
                     </aside>
                     <div style="width: 100%">
@@ -61,6 +61,7 @@ import Purchases from '../components/cabinet/Purchases.vue'
 import Sales from '../components/cabinet/Sales.vue'
 import Subcriptions from '../components/cabinet/Subcriptions.vue'
 import UserData from '../components/cabinet/UserData.vue'
+import { mapGetters } from 'vuex'
 export default {
   components: { UserData, Payment, Subcriptions, Sales, Purchases, Messages, Favorites },
     name: 'Cabinet',
@@ -68,7 +69,17 @@ export default {
         return {
             currentTab: 'userData',
         }
-    }
+    },
+    mounted() {
+        if (!this.userToken) {
+            this.$router.push('/')
+        }
+    },
+    computed: {
+      ...mapGetters({
+        userToken: 'auth/userToken'
+      })
+    },
 }
 </script>
 

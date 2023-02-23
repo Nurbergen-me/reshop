@@ -30,8 +30,8 @@ export const mutations = {
         } else {
             state.cartItems.push({... product, quantity: 1})
         }
-        state.totalPrice += product.newPrice
-        state.totalDiscount += product.oldPrice - product.newPrice
+        state.totalPrice += product.price
+        state.totalDiscount += (product.price || 0) - product.price
         state.totalQuantity += 1
     },
     
@@ -52,8 +52,8 @@ export const mutations = {
 
     deleteFromCart(state, product) {
         state.cartItems = state.cartItems.filter((item) => item.id !== product.id)
-        state.totalPrice -= product.newPrice * product.quantity
-        state.totalDiscount -= (product.oldPrice - product.newPrice) * product.quantity
+        state.totalPrice -= product.price * product.quantity
+        state.totalDiscount -= ((product.oldPrice || 0) - product.price) * product.quantity
         state.totalQuantity -= product.quantity
     },
 

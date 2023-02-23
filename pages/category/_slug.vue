@@ -404,7 +404,7 @@
                 Здесь может быть какое-то важное предложение
               </p>
               <div class="category__products-cards cards">
-                <Card v-for="product in products" :cardData="product" :key="product.id" style="grid-column: span 4;" />
+                <Card v-for="product in categoryProducts" :cardData="product" :key="product.id" style="grid-column: span 4;" />
               </div>
               <p class="category__products-text">
                 Чем отличается свитер от свитшота? Джемпер от пуловера? Худи от
@@ -423,6 +423,11 @@
 <script>
 export default {
   name: 'Category',
+
+  // async fetch({ params, $api }) {
+  //   const data = await $api.get(`categories/${params.slug}/products`).then(res => res.response)
+  //   this.categoryProducts = data?.products
+  // },
 
   data() {
     return {
@@ -505,6 +510,7 @@ export default {
           title: '48 (M)'
         },
       ],
+      categoryProducts: [],
 
       products: [
           {
@@ -541,7 +547,15 @@ export default {
     }
   },
 
+  mounted() {
+    this.getProducts()
+  },
+
   methods: {
+    async getProducts() {
+        const data = await this.$api.get(`categories/${this.$route.params.slug}/products`)
+        this.categoryProducts = data?.data?.response.products
+    },
     toggleFilter(item, type) {
       if (!this.selectedFilters[type]) return
 
