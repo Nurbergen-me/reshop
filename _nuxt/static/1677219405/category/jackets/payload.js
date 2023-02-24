@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/category/jackets", {data:[{}],fetch:{},mutations:[]});

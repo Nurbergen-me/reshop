@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/category/jewelerly", {data:[{}],fetch:{},mutations:[]});
