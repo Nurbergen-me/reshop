@@ -288,7 +288,7 @@
   position: absolute;
   top: 25px;
   right: 7px;
-  background: url("/assets/images/tab-down.svg");
+  background: url("@/assets/images/tab-down.svg");
   background-repeat: no-repeat;
   background-size: contain;
   display: none;

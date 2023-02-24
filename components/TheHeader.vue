@@ -176,8 +176,8 @@
       <div class="mobile" :class="{'active': mobileMenu}">
         <div class="mobile__top">
           <div class="mobile__catalog-tabs">
-            <a href="#" class="mobile__catalog-tab" :class="{'active': currentTab === 'his'}" @click.prevent="currentTab = 'his'">ДЛЯ НЕЕ</a>
-            <a href="#" class="mobile__catalog-tab" :class="{'active': currentTab === 'her'}" @click.prevent="currentTab = 'her'">ДЛЯ НЕГО</a>
+            <a href="#" class="mobile__catalog-tab" :class="{'active': currentTab === 'her'}" @click.prevent="currentTab = 'her'">ДЛЯ НЕЕ</a>
+            <a href="#" class="mobile__catalog-tab" :class="{'active': currentTab === 'his'}" @click.prevent="currentTab = 'his'">ДЛЯ НЕГО</a>
           </div>
           <div class="mobile__catalog-body" v-if="currentTab === 'her'">
             <template v-for="category in catalog.her.categories">

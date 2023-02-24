@@ -1349,13 +1349,13 @@ p {
 }
 
 .recommend__card {
-  width: 270px;
+  /* width: 270px; */
   position: relative;
 }
 
 .recommend__card-img {
   width: 100%;
-  height: 337px;
+  height: auto;
   background: #f1f1f1;
   display: flex;
   justify-content: center;
@@ -1456,7 +1456,7 @@ p {
 
 @media screen and (max-width: 600px) {
   .recommend__card {
-    width: calc(50% - 10px);
+    /* width: calc(50% - 10px); */
   }
   .recommend__card-img {
     height: 206px;

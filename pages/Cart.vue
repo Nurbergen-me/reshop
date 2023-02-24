@@ -30,8 +30,8 @@
                 </div>
                 <div class="cart__item-info">
                   <div class="cart__item-prices--mob">
-                    <div v-if="product.price" class="cart__item-newprice--mob">{{ product.price }} р.</div>
-                    <div class="cart__item-oldprice--mob">{{ product.oldPrice }} р.</div>
+                    <div v-if="product.price" class="cart__item-newprice--mob">{{ product.quantity }} &times; {{ product.price }} р.</div>
+                    <div v-if="product.oldPrice" class="cart__item-oldprice--mob">{{ product.oldPrice }} р.</div>
                   </div>
                   <a href="#" class="cart__item-name"
                     >{{ product.name }}</a
@@ -51,7 +51,7 @@
                       </a>
                     </div>
                     <div class="cart__item-prices">
-                      <div v-if="oldPrice" class="cart__item-oldprice">{{ product.oldPrice }} р.</div>
+                      <div v-if="product.oldPrice" class="cart__item-oldprice">{{ product.oldPrice }} р.</div>
                       <div class="cart__item-newprice">{{ product.quantity }} &times; {{ product.price }} р.</div>
                     </div>
                   </div>

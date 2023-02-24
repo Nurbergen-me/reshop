@@ -459,7 +459,7 @@
   content: "";
   width: 10px;
   height: 10px;
-  background: url("/assets/images/filter-arrow.svg");
+  background: url("@/assets/images/filter-arrow.svg");
   background-repeat: no-repeat;
   background-size: contain;
   position: absolute;

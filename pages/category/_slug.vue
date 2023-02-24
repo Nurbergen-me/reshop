@@ -404,7 +404,7 @@
                 Здесь может быть какое-то важное предложение
               </p>
               <div class="category__products-cards cards">
-                <Card v-for="product in categoryProducts" :cardData="product" :key="product.id" style="grid-column: span 4;" />
+                <Card v-for="product in categoryProducts" :cardData="product" :key="product.id" />
               </div>
               <p class="category__products-text">
                 Чем отличается свитер от свитшота? Джемпер от пуловера? Худи от
