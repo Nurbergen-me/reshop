@@ -9,7 +9,7 @@
                 <a href="#">Категория</a>
               </div>
               <h1 class="category__title">
-                Джемперы и свитшоты
+                {{ category?.name }}
                 <span class="category__title-amount">156 штук</span>
               </h1>
             </div>
@@ -421,6 +421,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import CatalogVue from '../Catalog.vue'
 export default {
   name: 'Category',
 
@@ -432,6 +434,7 @@ export default {
   data() {
     return {
       sortBy: 'price',
+      category: null,
       filter: {
         priceFrom: 100,
         priceTo: '',
@@ -549,6 +552,14 @@ export default {
 
   mounted() {
     this.getProducts()
+    const category = this.categoryData(this.$route.params.slug)
+    this.category = category
+  },
+
+  computed: {
+    ...mapGetters({
+      categoryData: 'products/getCategoryData'
+    })
   },
 
   methods: {

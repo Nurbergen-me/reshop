@@ -29,6 +29,10 @@ export const state = () => ({
 export const getters = {
     catalog:(state) => state.catalog,
     categories:(state) => state.categories,
+    getCategoryData: (state) => (categoryId) => {
+        console.log(categoryId)
+        return state.catalog.her.categories[1].subCategories.find(item => item.id === Number(categoryId))
+    }
 }   
 
 export const mutations = {
